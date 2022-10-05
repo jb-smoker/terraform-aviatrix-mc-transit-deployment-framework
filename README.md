@@ -1,23 +1,26 @@
 # terraform-aviatrix-mc-transit-deployment-framework
 
 ### Description
+
 This module composes the [mc-transit](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit), [mc-firenet](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-firenet) and peering modules([1](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-peering))([2](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-peering-advanced)) together to provide a reference transit layer implementation.
 
 <span style="color:red"><b>Warning:</b></span> This module leverages a Terraform [experimental feature](https://www.terraform.io/language/functions/defaults). Read the details of this feature and decide whether it is appropriate for you to adopt this module as-is, while using this feature.
 
 ### Compatibility
+
 Module version | Terraform version | Controller version | Terraform provider version | Used Transit module | Used Firenet module
-:--- | :--- | :--- | :--- | :--- | :--- 
-v0.0.5 | >=1.1.0 | >= 6.8 | ~> 2.23.0 | v2.2.0 | v1.1.2
+:--- | :--- | :--- | :--- | :--- | :---
+v0.0.6 | >=1.1.0 | >= 6.9 | ~> 2.24.0 | v2.3.0 | v1.3.0
 
 Check [release notes](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/RELEASE_NOTES.md) for more details.
 Check [compatibility list](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/COMPATIBILITY.md) for older versions.
 
 ### Usage Example
+
 ```hcl
 module "framework" {
   source  = "terraform-aviatrix-modules/mc-transit-deployment-framework/aviatrix"
-  version = "v0.0.5"
+  version = "v0.0.6"
 
   default_transit_accounts = {
     aws   = "AWS-Account",
@@ -76,6 +79,7 @@ module "framework" {
 ```
 
 ### Variables
+
 The following variables are required:
 
 key | value
@@ -84,7 +88,7 @@ transit_firenet | A map with all relevant transit and firenet arguments. See [Tr
 
 The following variables are optional:
 
-key | default | value 
+key | default | value
 :---|:---|:---
 default_transit_accounts** | | Map of default access accounts to be used to deploy the transit Firenet infrastructure. (Valid keys are "aws", "azure", "gcp", "oci" and "ali".)
 default_firenet_firewall_image** | | Map of default firewall images for deploying Firenet. (Valid keys are "aws", "azure", "gcp" and "oci".)
@@ -96,6 +100,7 @@ excluded_cidrs | ["0.0.0.0/0", ] | List of CIDR's to exlude in peerings (not use
 **Any defaults that are not configured, need to be explicitly set in the transit_firenet variable for each entry, _if_ the argument is used (e.g. firenet_firewall_image does not require to be set if firenet is not deployed altogether).
 
 ### Transit Firenet map arguments
+
 Arguments in this map prepended with "transit_" are pushed to the underlying mc-transit module. Arguments prepended with "firenet_" are pushed to the mc-firenet module. As such, more details on these arguments can also be found in the documentation of the [mc-transit](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit) and [mc-firenet](https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-firenet) modules. (e.g. "transit_cidr" maps to the "cidr" argument on the mc-transit module)
 
 The following arguments are mandatory in the "transit_firenet" map variable:
@@ -122,7 +127,7 @@ transit_az2 | <img src="https://github.com/terraform-aviatrix-modules/terraform-
 [transit_bgp_ecmp](https://registry.terraform.io/providers/AviatrixSystems/aviatrix/latest/docs/resources/aviatrix_transit_gateway#bgp_ecmp) |<img src="https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/img/aws.png?raw=true" title="AWS"> <img src="https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/img/azure.png?raw=true" title="Azure"> <img src="https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/img/gcp.png?raw=true" title="GCP"> <img src="https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/img/oci.png?raw=true" title="OCI"> <img src="https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/img/alibaba.png?raw=true" title="Alibaba"> |  false | Enable Equal Cost Multi Path (ECMP) routing for the next hop
 [transit_bgp_lan_interfaces](https://registry.terraform.io/providers/AviatrixSystems/aviatrix/latest/docs/resources/aviatrix_transit_gateway#bgp_lan_interfaces) | <img src="https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/img/gcp.png?raw=true" title="GCP"> | | [A list of interfaces to run BGP protocol on top of the ethernet interface](https://registry.terraform.io/providers/AviatrixSystems/aviatrix/latest/docs/resources/aviatrix_transit_gateway#bgp_lan_interfaces)
 transit_bgp_lan_interfaces_count | <img src="https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/img/azure.png?raw=true" title="Azure"> | | Number of interfaces that will be created for BGP over LAN enabled Azure transit.
-[transit_bgp_manual_spoke_advertise_cidrs](https://registry.terraform.io/providers/AviatrixSystems/aviatrix/latest/docs/resources/aviatrix_transit_gateway#bgp_manual_spoke_advertise_cidrs) |<img src="https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/img/aws.png?raw=true" title="AWS"> <img src="https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/img/azure.png?raw=true" title="Azure"> <img src="https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/img/gcp.png?raw=true" title="GCP"> <img src="https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/img/oci.png?raw=true" title="OCI"> <img src="https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/img/alibaba.png?raw=true" title="Alibaba"> |  | Intended CIDR list to advertise via BGP. Example: "10.2.0.0/16,10.4.0.0/16" 
+[transit_bgp_manual_spoke_advertise_cidrs](https://registry.terraform.io/providers/AviatrixSystems/aviatrix/latest/docs/resources/aviatrix_transit_gateway#bgp_manual_spoke_advertise_cidrs) |<img src="https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/img/aws.png?raw=true" title="AWS"> <img src="https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/img/azure.png?raw=true" title="Azure"> <img src="https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/img/gcp.png?raw=true" title="GCP"> <img src="https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/img/oci.png?raw=true" title="OCI"> <img src="https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/img/alibaba.png?raw=true" title="Alibaba"> |  | Intended CIDR list to advertise via BGP. Example: "10.2.0.0/16,10.4.0.0/16"
 [transit_bgp_polling_time](https://registry.terraform.io/providers/AviatrixSystems/aviatrix/latest/docs/resources/aviatrix_transit_gateway#bgp_polling_time) | <img src="https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/img/aws.png?raw=true" title="AWS"> <img src="https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/img/azure.png?raw=true" title="Azure"> <img src="https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/img/gcp.png?raw=true" title="GCP"> <img src="https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/img/oci.png?raw=true" title="OCI"> <img src="https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/img/alibaba.png?raw=true" title="Alibaba"> | 50 | BGP route polling time. Unit is in seconds
 [transit_connected_transit](https://registry.terraform.io/providers/AviatrixSystems/aviatrix/latest/docs/resources/aviatrix_transit_gateway#connected_transit) | <img src="https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/img/aws.png?raw=true" title="AWS"> <img src="https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/img/azure.png?raw=true" title="Azure"> <img src="https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/img/gcp.png?raw=true" title="GCP"> <img src="https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/img/oci.png?raw=true" title="OCI"> <img src="https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/img/alibaba.png?raw=true" title="Alibaba"> | true | Set to false to disable connected_transit
 [transit_customer_managed_keys](https://registry.terraform.io/providers/AviatrixSystems/aviatrix/latest/docs/resources/aviatrix_transit_gateway#customer_managed_keys) | <img src="https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/img/aws.png?raw=true" title="AWS"> | | Customer managed key ID for EBS Volume encryption.
@@ -195,6 +200,7 @@ firenet_mgmt_cidr | <img src="https://github.com/terraform-aviatrix-modules/terr
 [firenet_username](https://registry.terraform.io/providers/AviatrixSystems/aviatrix/latest/docs/resources/aviatrix_firewall_instance#username) | <img src="https://github.com/terraform-aviatrix-modules/terraform-aviatrix-mc-transit-deployment-framework/blob/main/img/azure.png?raw=true" title="Azure"> | fwadmin | Applicable to Azure or AzureGov deployment only. "admin" as a username is not accepted. (For Checkpoint it is always admin)
 
 ### Outputs
+
 This module will return the following outputs:
 
 key | description
