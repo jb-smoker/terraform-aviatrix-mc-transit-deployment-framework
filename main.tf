@@ -55,8 +55,8 @@ module "transit" {
   enable_gateway_load_balancer     = local.transit[each.key].transit_enable_gateway_load_balancer
   bgp_lan_interfaces_count         = local.transit[each.key].transit_bgp_lan_interfaces_count
   private_mode_lb_vpc_id           = local.transit[each.key].transit_private_mode_lb_vpc_id
-  private_mode_subnet_zone         = local.transit[each.key].transit_private_mode_subnet_zone
-  ha_private_mode_subnet_zone      = local.transit[each.key].transit_ha_private_mode_subnet_zone
+  # private_mode_subnet_zone         = local.transit[each.key].transit_private_mode_subnet_zone
+  # ha_private_mode_subnet_zone      = local.transit[each.key].transit_ha_private_mode_subnet_zone
   private_mode_subnets             = local.transit[each.key].transit_private_mode_subnets
 }
 
